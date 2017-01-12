@@ -109,25 +109,15 @@ PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEy
 
 ```
 @function svg-url($svg){
-    //
-    //  Add missing namespace
-    //
     @if not str-index($svg,xmlns) {
         $svg: str-replace($svg, '<svg','<svg xmlns="http://www.w3.org/2000/svg"');   
-    }        
-    //    
-    //  Chunk up string in order to avoid 
-    //  "stack level too deep" error
-    //     
+    }           
     $encoded:'';
     $slice: 2000;
     $index: 0;
     $loops: ceil(str-length($svg)/$slice);
     @for $i from 1 through $loops {
         $chunk: str-slice($svg, $index, $index + $slice - 1); 
-        //
-        //   Encode 
-        //
         $chunk: str-replace($chunk, '%', '%25');
         $chunk: str-replace($chunk, '"', '%22');
         $chunk: str-replace($chunk, "'", '%27');
@@ -143,13 +133,11 @@ PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEy
     }
     @return url("data:image/svg+xml,#{$encoded}");   
 }
-        
-//  Background svg mixin          
+            
 @mixin background-svg($svg){
     background-image: svg-url($svg);        
 }        
             
-//  Helper function to replace characters in a string
 @function str-replace($string, $search, $replace: '') {
     $index: str-index($string, $search); 
     @return if($index, 
